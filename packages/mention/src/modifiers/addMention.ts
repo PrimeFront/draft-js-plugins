@@ -23,6 +23,10 @@ export default function addMention(
 
   const firstMentionCharacter = mention.name.charAt(0);
 
+  console.log('mentionTrigger', mentionTrigger)
+  console.log('firstMentionCharacter', firstMentionCharacter)
+  console.log('test', mentionTrigger === firstMentionCharacter ? mention.name : mentionPrefix + mention.name)
+
   let mentionReplacedContent = Modifier.replaceText(
     editorState.getCurrentContent(),
     mentionTextSelection,
