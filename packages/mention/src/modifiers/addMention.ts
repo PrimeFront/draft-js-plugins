@@ -1,12 +1,14 @@
 import { Modifier, EditorState } from 'draft-js';
 import { MentionData } from '..';
 import getSearchText from '../utils/getSearchText';
+import getTypeByTrigger from '../utils/getTypeByTrigger';
 
 export default function addMention(
   editorState: EditorState,
   mention: MentionData,
   mentionPrefix: string,
   mentionTrigger: string,
+  entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE'
 ): EditorState {
   const currentSelectionState = editorState.getSelection();
   const { begin, end } = getSearchText(editorState, currentSelectionState, [
