@@ -1,7 +1,7 @@
 {
   "name": "draft-js-plugins-prime",
   "description": "A Plugin Architecture on top of Draft.JS",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": {
     "name": "Nik Graf",
     "email": "nik@nikgraf.com",
