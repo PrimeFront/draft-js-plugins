@@ -1,22 +1,13 @@
 import { Modifier, EditorState } from 'draft-js';
 import { MentionData } from '..';
 import getSearchText from '../utils/getSearchText';
-import getTypeByTrigger from '../utils/getTypeByTrigger';
 
 export default function addMention(
   editorState: EditorState,
   mention: MentionData,
   mentionPrefix: string,
   mentionTrigger: string,
-  entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE'
 ): EditorState {
-  const contentStateWithEntity = editorState
-    .getCurrentContent()
-    .createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {
-      mention,
-    });
-  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-
   const currentSelectionState = editorState.getSelection();
   const { begin, end } = getSearchText(editorState, currentSelectionState, [
     mentionTrigger,
@@ -33,9 +24,8 @@ export default function addMention(
   let mentionReplacedContent = Modifier.replaceText(
     editorState.getCurrentContent(),
     mentionTextSelection,
-    `${mentionTrigger === firstMentionCharacter ? firstMentionCharacter : mentionPrefix}${mention.name}`,
-    editorState.getCurrentInlineStyle(),
-    entityKey
+    `${mentionTrigger === firstMentionCharacter ? mention.name : mentionPrefix + mention.name}`,
+    editorState.getCurrentInlineStyle()
   );
 
   // If the mention is inserted at the end, a space is appended right after for
