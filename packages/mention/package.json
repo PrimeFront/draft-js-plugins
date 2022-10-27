@@ -1,6 +1,6 @@
 {
-  "name": "@draft-js-plugins/mention",
-  "version": "5.2.1",
+  "name": "draft-js-plugins-mention-prime",
+  "version": "5.2.2",
   "sideEffects": [
     "*.css"
   ],
