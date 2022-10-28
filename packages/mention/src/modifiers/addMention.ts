@@ -10,6 +10,13 @@ export default function addMention(
   mentionTrigger: string,
   entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE'
 ): EditorState {
+  const contentStateWithEntity = editorState
+    .getCurrentContent()
+    .createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {
+      mention,
+    });
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+
   const currentSelectionState = editorState.getSelection();
   const { begin, end } = getSearchText(editorState, currentSelectionState, [
     mentionTrigger,
@@ -21,17 +28,12 @@ export default function addMention(
     focusOffset: end,
   });
 
-  const firstMentionCharacter = mention.name.charAt(0);
-
-  console.log('mentionTrigger', mentionTrigger)
-  console.log('firstMentionCharacter', firstMentionCharacter)
-  console.log('test', mentionTrigger === firstMentionCharacter ? mention.name : mentionPrefix + mention.name)
-
   let mentionReplacedContent = Modifier.replaceText(
     editorState.getCurrentContent(),
     mentionTextSelection,
-    `${mentionTrigger === firstMentionCharacter ? mention.name : mentionPrefix + mention.name}`,
-    editorState.getCurrentInlineStyle()
+    `${mentionTrigger + mention.name}`,
+    editorState.getCurrentInlineStyle(),
+    mentionTrigger === "#" ? undefined : entityKey
   );
 
   // If the mention is inserted at the end, a space is appended right after for
